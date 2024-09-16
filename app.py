@@ -25,22 +25,32 @@ async def send_receive(websocket, device_key, devices, connected):
     """
     async for message in websocket:
         event = json.loads(message)
-        assert event["type"] == "position"
-        lat = event["lat"]
-        lon = event["lon"]
-        direction = event["dir"]
-        speed = event["speed"]
-
-        devices[device_key]["lat"] = lat
-        devices[device_key]["lon"] = lon
-        devices[device_key]["dir"] = direction
-        devices[device_key]["speed"] = speed
-        
-        event = {
-            "type": "positions",
-            "devices": devices
-        }
-        broadcast(connected, json.dumps(event))
+        assert event["type"] == "position" or event["type"] == "message"
+        if event["type"] == "position":
+            lat = event["lat"]
+            lon = event["lon"]
+            direction = event["dir"]
+            speed = event["speed"]
+            
+            devices[device_key]["lat"] = lat
+            devices[device_key]["lon"] = lon
+            devices[device_key]["dir"] = direction
+            devices[device_key]["speed"] = speed
+            
+            event = {
+                "type": "positions",
+                "devices": devices
+            }
+            broadcast(connected, json.dumps(event))
+        elif event["type"] == "message":
+            content = event["content"]
+            
+            event = {
+                "type": "message",
+                "device": device_key,
+                "content": content,
+            }
+            broadcast(connected, json.dumps(event))
 
 async def create(websocket, user_name):
     """
