@@ -24,7 +24,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: nirvn/ws
+          images: ghcr.io/nirvn/ws
 
       - 
         name: Set up Docker Buildx
