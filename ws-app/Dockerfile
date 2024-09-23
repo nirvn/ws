@@ -1,5 +1,4 @@
-FROM ubuntu:24.04
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -qq -y python3 python3-pip && apt-get clean
+FROM python:3.12
 
 COPY requirements.txt /requirements.txt
 COPY app.py /app.py
