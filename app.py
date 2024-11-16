@@ -90,6 +90,13 @@ async def create(websocket, user_name, group_key = None):
         print(f"Device {device_key} left group with access token {group_key}...")
         connected.remove(websocket)
         del devices[device_key]
+        
+        event = {
+            "type": "positions",
+            "devices": devices
+        }
+        broadcast(connected, json.dumps(event))
+
         if len(connected) == 0:
             print(f"Removing emptied group with access token {group_key}...")
             del GROUPS[group_key]
@@ -135,6 +142,13 @@ async def join(websocket, user_name, group_key):
             print(f"Device {device_key} left group with access token {group_key}...")
             connected.remove(websocket)
             del devices[device_key]
+            
+            event = {
+                "type": "positions",
+                "devices": devices
+            }
+            broadcast(connected, json.dumps(event))
+        
             if len(connected) == 0:
                 print(f"Removing emptied group with access token {group_key}...")
                 del GROUPS[group_key]
