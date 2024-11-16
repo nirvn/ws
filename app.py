@@ -4,11 +4,12 @@ import json
 import secrets
 import signal
 import os
+import sys
 
 from websockets.asyncio.server import broadcast, serve
 
 GROUPS = {}
-COLORS = ['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00']
+COLORS = ['#e41a1c', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf']
 
 async def error(websocket, message):
     """
@@ -142,15 +143,19 @@ async def handler(websocket):
     elif event["type"] == "create":
         await create(websocket, event["user"])
 
+class SkipHandshakeErrorsHandler(logging.StreamHandler):
+    def handle(self, record):
+        if not record.msg == "opening handshake failed":
+            super().handle(record)
 
 async def main():
+    logging.getLogger("websockets").addHandler(SkipHandshakeErrorsHandler(sys.stdout))
     print("Launching server...")
+    
     # Set the stop condition when receiving SIGTERM.
     loop = asyncio.get_running_loop()
     stop = loop.create_future()
     loop.add_signal_handler(signal.SIGTERM, stop.set_result, None)
-
-    logging.getLogger("websockets").addHandler(logging.NullHandler())
 
     async with serve(handler, "", 8001):
         await asyncio.get_running_loop().create_future()  # run forever
