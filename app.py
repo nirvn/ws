@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import json
 import secrets
 import signal
@@ -148,7 +149,9 @@ async def main():
     loop = asyncio.get_running_loop()
     stop = loop.create_future()
     loop.add_signal_handler(signal.SIGTERM, stop.set_result, None)
-    
+
+    logging.getLogger("websockets").addHandler(logging.NullHandler())
+
     async with serve(handler, "", 8001):
         await asyncio.get_running_loop().create_future()  # run forever
 
