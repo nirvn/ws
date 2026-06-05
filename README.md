@@ -28,7 +28,7 @@ wscat -c ws://localhost:8001/
 
 Terminal 3:
 
-``bash
+```bash
 npm install -g wscat
 wscat -c ws://localhost:8001/
 {"type":"join","user":"Bob","group":"_1jg4Jt2MWhYmu59"}
