@@ -1,0 +1,17 @@
+apiVersion: v2
+name: ws-chart
+description: WebSocket server for the QField livefield plugin.
+type: application
+kubeVersion: ">=1.23.0-0"
+
+# Chart version - bump on every release of this chart.
+version: 0.1.0
+# The version of the app shipped in this chart. Override with --set image.tag
+# at install time to deploy a different build.
+appVersion: "main"
+
+sources:
+  - https://github.com/nirvn/ws
+
+maintainers:
+  - name: nirvn
