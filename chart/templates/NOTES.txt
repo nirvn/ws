@@ -1,0 +1,20 @@
+{{ .Chart.Name }} is now running.
+
+{{- if .Values.ingress.enabled }}
+
+It is reachable at:
+{{- range $host := .Values.ingress.hosts }}
+{{- range .paths }}
+  ws{{ if $.Values.ingress.tls }}s{{ end }}://{{ $host.host }}{{ .path }}
+{{- end }}
+{{- end }}
+{{- else }}
+
+To connect from your machine, port-forward the service:
+
+  kubectl --namespace {{ .Release.Namespace }} port-forward svc/{{ include "ws.fullname" . }} 8001:{{ .Values.service.port }}
+
+Then point a WebSocket client at ws://127.0.0.1:8001
+{{- end }}
+
+Reminder: this server keeps state in memory. Keep replicaCount=1.

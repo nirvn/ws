@@ -28,7 +28,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ghcr.io/nirvn/ws
+          images: ghcr.io/${{ github.repository_owner }}/ws
 
       -
         name: Set up QEMU emulator for multi-arch images
