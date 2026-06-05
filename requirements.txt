@@ -1,2 +1,2 @@
-websockets
-websockets
+# Python 3.12 compatible. If updating, ensure 3.13+ support.
+websockets==16.0
